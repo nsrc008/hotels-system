@@ -6,11 +6,21 @@ import Modal from "./Modal";
 import Alert from "./Alert";
 import { toast } from "react-toastify";
 
+// Definimos la interfaz Hotel basada en los datos usados
+interface Hotel {
+  id: number;
+  nombre: string;
+  direccion: string;
+  ciudad: string;
+  nit: string;
+  numero_habitaciones: number;
+}
+
 // Componente que muestra la lista de hoteles y permite agregar o eliminar hoteles
 const HotelList: React.FC = () => {
-  const [hotels, setHotels] = useState<any[]>([]); // Estado para almacenar la lista de hoteles
+  const [hotels, setHotels] = useState<Hotel[]>([]); // Tipamos el estado como Hotel[]
   const [showModal, setShowModal] = useState(false); // Controla la visibilidad del modal para agregar hotel
-  const [showConfirm, setShowConfirm] = useState<number | null>(null); // ID del hotel a eliminar, para mostrar confirmación
+  const [showConfirm, setShowConfirm] = useState<number | null>(null); // ID del hotel a eliminar
 
   // Carga la lista de hoteles al montar el componente o al cerrar el modal
   useEffect(() => {

@@ -24,5 +24,13 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
     },
+    "overrides": [
+      {
+        "files": ["jest.setup.ts"],
+        "rules": {
+          "no-require-imports": "off"
+        }
+      }
+    ]
   },
 )

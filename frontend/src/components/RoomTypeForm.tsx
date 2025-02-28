@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { createRoomType, updateRoomType } from "../services/api";
 import { toast } from "react-toastify";
 
@@ -14,34 +14,55 @@ interface RoomTypeFormProps {
   onSave: () => void; // Función para cerrar el modal y recargar datos
 }
 
+// Tipamos el estado formData
+interface RoomTypeData {
+  tipo: "ESTANDAR" | "JUNIOR" | "SUITE";
+  acomodacion: "SENCILLA" | "DOBLE" | "TRIPLE" | "CUADRUPLE";
+  cantidad: number;
+}
+
 // Componente para crear o editar un tipo de habitación mediante un formulario
 const RoomTypeForm: React.FC<RoomTypeFormProps> = ({
   hotelId,
   roomType,
   onSave,
 }) => {
-  const [formData, setFormData] = useState({
-    tipo: roomType?.tipo || "ESTANDAR",
-    acomodacion: roomType?.acomodacion || "SENCILLA",
+  const [formData, setFormData] = useState<RoomTypeData>({
+    tipo: (roomType?.tipo as "ESTANDAR" | "JUNIOR" | "SUITE") || "ESTANDAR",
+    acomodacion:
+      (roomType?.acomodacion as
+        | "SENCILLA"
+        | "DOBLE"
+        | "TRIPLE"
+        | "CUADRUPLE") || "SENCILLA",
     cantidad: roomType?.cantidad || 0,
   }); // Estado para los datos del formulario
 
-  // Opciones válidas de acomodación según el tipo de habitación
-  const acomodacionesPorTipo: { [key: string]: string[] } = {
-    ESTANDAR: ["SENCILLA", "DOBLE"],
-    JUNIOR: ["TRIPLE", "CUADRUPLE"],
-    SUITE: ["SENCILLA", "DOBLE", "TRIPLE"],
-  };
+  // Opciones válidas de acomodación según el tipo de habitación (memoizado para evitar cambios)
+  const acomodacionesPorTipo = useMemo<{
+    [key in "ESTANDAR" | "JUNIOR" | "SUITE"]: string[];
+  }>(
+    () => ({
+      ESTANDAR: ["SENCILLA", "DOBLE"],
+      JUNIOR: ["TRIPLE", "CUADRUPLE"],
+      SUITE: ["SENCILLA", "DOBLE", "TRIPLE"],
+    }),
+    []
+  );
 
   // Ajusta la acomodación si cambia el tipo y no es válida
   useEffect(() => {
     if (!acomodacionesPorTipo[formData.tipo].includes(formData.acomodacion)) {
       setFormData((prev) => ({
         ...prev,
-        acomodacion: acomodacionesPorTipo[formData.tipo][0],
+        acomodacion: acomodacionesPorTipo[formData.tipo][0] as
+          | "SENCILLA"
+          | "DOBLE"
+          | "TRIPLE"
+          | "CUADRUPLE",
       }));
     }
-  }, [formData.tipo]);
+  }, [formData.tipo, formData.acomodacion, acomodacionesPorTipo]);
 
   // Maneja el envío del formulario y la creación/edición del tipo de habitación
   const handleSubmit = (e: React.FormEvent) => {
@@ -91,7 +112,12 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({
       <label className="block mb-2 font-medium text-gray-700">Tipo:</label>
       <select
         value={formData.tipo}
-        onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            tipo: e.target.value as "ESTANDAR" | "JUNIOR" | "SUITE",
+          })
+        }
         className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <option value="ESTANDAR">Estándar</option>
@@ -104,7 +130,14 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({
       <select
         value={formData.acomodacion}
         onChange={(e) =>
-          setFormData({ ...formData, acomodacion: e.target.value })
+          setFormData({
+            ...formData,
+            acomodacion: e.target.value as
+              | "SENCILLA"
+              | "DOBLE"
+              | "TRIPLE"
+              | "CUADRUPLE",
+          })
         }
         className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
       >

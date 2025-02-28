@@ -4,15 +4,66 @@ const api = axios.create({
   baseURL: "http://127.0.0.1:8000/api", // URL de tu backend Laravel
 });
 
+// Interfaz para un hotel
+export interface Hotel {
+  id: number;
+  nombre: string;
+  direccion: string;
+  ciudad: string;
+  nit: string;
+  numero_habitaciones: number;
+  tipos_habitacion?: RoomType[]; // Opcional, ya que no siempre se incluye
+}
+
+// Interfaz para los datos enviados al crear/actualizar un hotel
+export interface HotelData {
+  nombre: string;
+  direccion: string;
+  ciudad: string;
+  nit: string;
+  numero_habitaciones: number;
+}
+
+// Interfaz para un tipo de habitación
+export interface RoomType {
+  id: number;
+  tipo: string;
+  acomodacion: string;
+  cantidad: number;
+}
+
+// Interfaz para los datos enviados al crear/actualizar un tipo de habitación
+export interface RoomTypeData {
+  tipo: "ESTANDAR" | "JUNIOR" | "SUITE";
+  acomodacion: "SENCILLA" | "DOBLE" | "TRIPLE" | "CUADRUPLE";
+  cantidad: number;
+}
+
+// Obtener lista de hoteles
 export const getHotels = () => api.get("/hoteles");
-export const createHotel = (data: any) => api.post("/hoteles", data);
+
+// Crear un hotel
+export const createHotel = (data: HotelData) =>
+  api.post<{ data: Hotel }>("/hoteles", data);
+
+// Obtener un hotel por ID
 export const getHotel = (id: number) => api.get(`/hoteles/${id}`);
-export const updateHotel = (id: number, data: any) =>
-  api.put(`/hoteles/${id}`, data);
-export const deleteHotel = (id: number) => api.delete(`/hoteles/${id}`);
-export const createRoomType = (hotelId: number, data: any) =>
-  api.post(`/hoteles/${hotelId}/habitaciones`, data);
-export const updateRoomType = (hotelId: number, id: number, data: any) =>
-  api.put(`/hoteles/${hotelId}/habitaciones/${id}`, data);
+
+// Actualizar un hotel
+export const updateHotel = (id: number, data: HotelData) =>
+  api.put<{ data: Hotel }>(`/hoteles/${id}`, data);
+
+// Eliminar un hotel
+export const deleteHotel = (id: number) => api.delete<void>(`/hoteles/${id}`);
+
+// Crear un tipo de habitación
+export const createRoomType = (hotelId: number, data: RoomTypeData) =>
+  api.post<{ data: RoomType }>(`/hoteles/${hotelId}/habitaciones`, data);
+
+// Actualizar un tipo de habitación
+export const updateRoomType = (hotelId: number, id: number, data: RoomTypeData) =>
+  api.put<{ data: RoomType }>(`/hoteles/${hotelId}/habitaciones/${id}`, data);
+
+// Eliminar un tipo de habitación
 export const deleteRoomType = (hotelId: number, id: number) =>
-  api.delete(`/hoteles/${hotelId}/habitaciones/${id}`);
+  api.delete<void>(`/hoteles/${hotelId}/habitaciones/${id}`);

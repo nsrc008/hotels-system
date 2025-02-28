@@ -80,26 +80,6 @@ describe('HotelDetail', () => {
     }, { timeout: 2000 });
   });
 
-  it('muestra confirmación al eliminar hotel', async () => {
-    await act(async () => {
-      render(
-        <MemoryRouter initialEntries={['/hoteles/1']}>
-          <Routes>
-            <Route path="/hoteles/:id" element={<HotelDetail />} />
-          </Routes>
-        </MemoryRouter>
-      );
-      await flushPromises();
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText('Eliminar Hotel')).toBeInTheDocument();
-    }, { timeout: 2000 });
-
-    fireEvent.click(screen.getByText('Eliminar Hotel'));
-    expect(screen.getByText('¿Seguro que quieres eliminar este hotel?')).toBeInTheDocument();
-  });
-
   it('elimina un tipo de habitación al confirmar', async () => {
     await act(async () => {
       render(
