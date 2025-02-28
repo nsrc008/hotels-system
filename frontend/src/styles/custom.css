@@ -1,0 +1,125 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 28rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  padding: 1.5rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative; /* Asegura que absolute funcione dentro de este contenedor */
+}
+
+@media (min-width: 640px) {
+  .modal-content {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* Animación de fade-in */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Media Queries para pantallas de 13-15 pulgadas (1280px - 1440px) */
+@media (min-width: 1280px) and (max-width: 1440px) {
+  .grid.grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 1.5rem;
+  }
+  .hotel-detail-card {
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .form-container {
+    max-width: 600px;
+  }
+}
+
+/* Responsividad para móviles (<640px) */
+@media (max-width: 639px) {
+  .grid.grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .hotel-detail-card,
+  .form-container {
+    padding: 1rem;
+  }
+}
+
+/* Tablet (640px - 1024px) */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .grid.grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* Pantallas grandes (>1440px) */
+@media (min-width: 1441px) {
+  .grid.grid-cols-1.sm\:grid-cols-2.lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+  .form-container {
+    max-width: 700px;
+  }
+}
+
+.room-type-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Móviles */
+}
+
+@media (min-width: 640px) {
+  .room-type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Tabletas */
+  }
+}
+
+@media (min-width: 1024px) {
+  .room-type-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* Laptops */
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1440px) {
+  .room-type-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 13-15 pulgadas */
+  }
+}
+
+@media (min-width: 1441px) {
+  .room-type-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* Pantallas grandes */
+  }
+}
