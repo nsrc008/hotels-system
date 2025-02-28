@@ -2,23 +2,23 @@ name: CI Pipeline - Decameron Hotels System
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
     paths:
-      - "backend/**"
-      - "frontend/**"
-      - "docs/**"
-      - ".github/workflows/ci.yml"
+      - 'backend/**'
+      - 'frontend/**'
+      - 'docs/**'
+      - '.github/workflows/ci.yml'
   pull_request:
-    branches: [main]
+    branches: [ main ]
     paths:
-      - "backend/**"
-      - "frontend/**"
-      - "docs/**"
-      - ".github/workflows/ci.yml"
+      - 'backend/**'
+      - 'frontend/**'
+      - 'docs/**'
+      - '.github/workflows/ci.yml'
 
 env:
-  PHP_VERSION: "8.2" # Actualizado a 8.2
-  NODE_VERSION: "18"
+  PHP_VERSION: '8.2'  # Mantenemos 8.2 por tu composer.lock
+  NODE_VERSION: '18'
 
 jobs:
   backend:
@@ -62,7 +62,7 @@ jobs:
           DB_DATABASE: hotel_db_test
           DB_USERNAME: test_user
           DB_PASSWORD: test_password
-        run: ./vendor/bin/phpunit --configuration phpunit.xml
+        run: ./vendor/bin/phpunit --configuration phpunit.xml  # Mantenemos phpunit
 
   frontend:
     runs-on: ubuntu-latest
@@ -84,10 +84,10 @@ jobs:
         run: npm install
       - name: Run Frontend Lint
         working-directory: frontend
-        run: npm run lint # Falla si hay errores
+        run: npm run lint  # Verifica que no haya errores de ESLint/TypeScript
       - name: Run Frontend Tests
         working-directory: frontend
-        run: npm test -- --watchAll=false
+        run: npm test -- --watchAll=false  # Ejecuta las pruebas de Jest
 
   docs-check:
     runs-on: ubuntu-latest
