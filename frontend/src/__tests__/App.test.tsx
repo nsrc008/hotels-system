@@ -1,18 +1,20 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import App from '../App';
-import '@testing-library/jest-dom';
+
+// Mockear las solicitudes de api.ts
+jest.mock('../services/api', () => ({
+  getHotels: jest.fn(() =>
+    Promise.resolve({
+      data: [
+        { id: 1, nombre: 'Hotel A', direccion: 'Calle 1', ciudad: 'Ciudad A', nit: '123', numero_habitaciones: 20 },
+      ],
+    })
+  ),
+}));
 
 describe('App', () => {
-  it('renderiza la ruta raíz con Hotels', () => {
+  it('renders hotel list', async () => {
     render(<App />);
-    expect(screen.getByText('Hoteles Decameron')).toBeInTheDocument();
-  });
-
-  it('renderiza la ruta de detalle con HotelDetail', async () => {
-    // Verifica el comportamiento inicial
-    render(<App />);
-    await waitFor(() => {
-      expect(screen.getByText('Hoteles Decameron')).toBeInTheDocument();
-    }, { timeout: 2000 });
+    expect(await screen.findByText(/Hotel A/)).toBeInTheDocument();
   });
 });
