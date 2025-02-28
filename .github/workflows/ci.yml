@@ -1,0 +1,132 @@
+name: CI Pipeline - Decameron Hotels System
+
+# Disparadores: push y pull request en la rama main
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# Variables globales
+env:
+  PHP_VERSION: '8.1'
+  NODE_VERSION: '18'
+
+jobs:
+  # Job para el Backend
+  backend:
+    runs-on: ubuntu-latest
+
+    # Solo ejecuta si hay cambios en backend
+    if: contains(github.event_name, 'push') || contains(github.event.pull_request.files, 'backend/')
+
+    # Servicio de PostgreSQL
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: test_user
+          POSTGRES_PASSWORD: test_password
+          POSTGRES_DB: hotel_db_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Cache de Composer
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: backend/vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      # Configurar PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: pdo_pgsql, pgsql
+
+      # Instalar dependencias
+      - name: Install Composer dependencies
+        working-directory: backend
+        run: composer install --no-progress --no-interaction
+
+      # Linting (opcional, si usas un linter como PHP_CodeSniffer)
+      - name: Run PHP Lint
+        working-directory: backend
+        run: composer run lint || true
+
+      # Ejecutar pruebas unitarias
+      - name: Run Backend Tests
+        working-directory: backend
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: 5432
+          DB_DATABASE: hotel_db_test
+          DB_USERNAME: test_user
+          DB_PASSWORD: test_password
+        run: ./vendor/bin/phpunit --configuration phpunit.xml
+
+  # Job para el Frontend
+  frontend:
+    runs-on: ubuntu-latest
+
+    # Solo ejecuta si hay cambios en frontend
+    if: contains(github.event_name, 'push') || contains(github.event.pull_request.files, 'frontend/')
+
+    steps:
+      # Checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Cache de Node.js
+      - name: Cache Node dependencies
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+
+      # Configurar Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # Instalar dependencias
+      - name: Install Node dependencies
+        working-directory: frontend
+        run: npm install
+
+      # Linting (si usas ESLint o similar)
+      - name: Run Frontend Lint
+        working-directory: frontend
+        run: npm run lint || true
+
+      # Ejecutar pruebas unitarias
+      - name: Run Frontend Tests
+        working-directory: frontend
+        run: npm test -- --watchAll=false
+
+  # Job opcional para verificar documentación
+  docs-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Check Docs Folder
+        run: |
+          if [ ! -d "docs" ]; then
+            echo "Carpeta docs no encontrada"
+            exit 1
+          fi
