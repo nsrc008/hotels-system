@@ -9,7 +9,7 @@ describe('App', () => {
   });
 
   it('renderiza la ruta de detalle con HotelDetail', async () => {
-    // Este enfoque verifica el comportamiento inicial
+    // Verifica el comportamiento inicial
     render(<App />);
     await waitFor(() => {
       expect(screen.getByText('Hoteles Decameron')).toBeInTheDocument();
