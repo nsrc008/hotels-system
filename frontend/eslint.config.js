@@ -6,6 +6,7 @@ import reactPlugin from 'eslint-plugin-react';
 import jestPlugin from 'eslint-plugin-jest';
 
 export default [
+  // Configuración base para todos los archivos
   {
     files: ['**/*.{js,ts,tsx}'],
     languageOptions: {
@@ -13,8 +14,8 @@ export default [
       sourceType: 'module',
       globals: {
         browser: true,
-        node: true,
-        jest: true,
+        node: true, // Para global y require (si se usa)
+        jest: true, // Para describe, it, expect
       },
       parser: typescriptParser,
     },
@@ -38,10 +39,23 @@ export default [
       },
     },
   },
+  // Configuración específica para archivos de prueba
+  {
+    files: ['**/__tests__/**', '*.test.{ts,tsx}'],
+    languageOptions: {
+      globals: {
+        jest: true, // Refuerza el entorno Jest para pruebas
+      },
+    },
+    rules: {
+      // Puedes agregar reglas específicas para pruebas si es necesario
+    },
+  },
+  // Configuración específica para jest.setup.ts (opcional si usas require)
   {
     files: ['jest.setup.ts'],
     rules: {
-      '@typescript-eslint/no-require-imports': 'off', // Excepción confirmada
+      '@typescript-eslint/no-require-imports': 'off', // Solo si mantienes require()
     },
   },
 ];
