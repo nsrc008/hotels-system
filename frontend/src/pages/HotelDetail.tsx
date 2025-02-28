@@ -156,13 +156,13 @@ const HotelDetail: React.FC = () => {
                 <div className="mt-2 space-x-2">
                   <button
                     onClick={() => setEditingRoom(room)}
-                    className="text-blue-500 hover:text-blue-700"
+                    className="p-2 text-blue-500 hover:text-blue-700"
                   >
                     Editar
                   </button>
                   <button
                     onClick={() => handleDeleteRoomType(room.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="p-2 text-red-500 hover:text-red-700"
                   >
                     Eliminar
                   </button>
