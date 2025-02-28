@@ -1,36 +1,28 @@
 name: CI Pipeline - Decameron Hotels System
 
-# Disparadores: push y pull request en main, con filtros de rutas
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - 'docs/**'
-      - '.github/workflows/ci.yml'
+      - "backend/**"
+      - "frontend/**"
+      - "docs/**"
+      - ".github/workflows/ci.yml"
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - 'docs/**'
-      - '.github/workflows/ci.yml'
+      - "backend/**"
+      - "frontend/**"
+      - "docs/**"
+      - ".github/workflows/ci.yml"
 
-# Variables globales
 env:
-  PHP_VERSION: '8.1'
-  NODE_VERSION: '18'
+  PHP_VERSION: "8.2" # Actualizado a 8.2
+  NODE_VERSION: "18"
 
 jobs:
-  # Job para el Backend
   backend:
     runs-on: ubuntu-latest
-
-    # Ejecuta solo si hay cambios en backend o en el workflow
-    if: github.event_name == 'push' || contains(github.event.pull_request.changed_files, 'backend/')
-
-    # Servicio de PostgreSQL
     services:
       postgres:
         image: postgres:latest
@@ -45,32 +37,23 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Cache Composer dependencies
         uses: actions/cache@v3
         with:
           path: backend/vendor
           key: ${{ runner.os }}-composer-${{ hashFiles('backend/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
-
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
           extensions: pdo_pgsql, pgsql
-
       - name: Install Composer dependencies
         working-directory: backend
         run: composer install --no-progress --no-interaction
-
-      - name: Run PHP Lint
-        working-directory: backend
-        run: composer run lint || true
-
       - name: Run Backend Tests
         working-directory: backend
         env:
@@ -81,48 +64,33 @@ jobs:
           DB_PASSWORD: test_password
         run: ./vendor/bin/phpunit --configuration phpunit.xml
 
-  # Job para el Frontend
   frontend:
     runs-on: ubuntu-latest
-
-    # Ejecuta solo si hay cambios en frontend o en el workflow
-    if: github.event_name == 'push' || contains(github.event.pull_request.changed_files, 'frontend/')
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Cache Node dependencies
         uses: actions/cache@v3
         with:
           path: frontend/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE_VERSION }}
-
       - name: Install Node dependencies
         working-directory: frontend
         run: npm install
-
       - name: Run Frontend Lint
         working-directory: frontend
-        run: npm run lint || true
-
+        run: npm run lint # Falla si hay errores
       - name: Run Frontend Tests
         working-directory: frontend
         run: npm test -- --watchAll=false
 
-  # Job para verificar documentación
   docs-check:
     runs-on: ubuntu-latest
-
-    # Ejecuta solo si hay cambios en docs o en el workflow
-    if: github.event_name == 'push' || contains(github.event.pull_request.changed_files, 'docs/')
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
