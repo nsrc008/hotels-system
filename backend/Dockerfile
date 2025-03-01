@@ -102,7 +102,7 @@ RUN chmod -R 777 /var/www/html/database && chown -R www-data:www-data /var/www/h
 # - php artisan key:generate: Genera una clave única para la aplicación
 RUN echo "APP_NAME=Laravel" > .env && \
     echo "APP_ENV=production" >> .env && \
-    echo "APP_DEBUG=true" >> .env && \
+    echo "APP_DEBUG=false" >> .env && \
     echo "APP_URL=http://localhost" >> .env && \
     echo "DB_CONNECTION=pgsql" >> .env && \
     echo "DB_HOST=${DB_HOST}" >> .env && \
