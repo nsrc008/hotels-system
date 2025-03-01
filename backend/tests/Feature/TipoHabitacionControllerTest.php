@@ -41,7 +41,7 @@ class TipoHabitacionControllerTest extends TestCase
         $data = [
             'tipo' => 'ESTANDAR',
             'acomodacion' => 'DOBLE',
-            'cantidad' => 10, // 15 + 10 > 20
+            'cantidad' => 10, 
         ];
 
         $response = $this->postJson("/api/hoteles/{$hotel->id}/habitaciones", $data);

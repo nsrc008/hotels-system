@@ -37,7 +37,6 @@ const HotelDetail: React.FC = () => {
     if (id) {
       getHotel(Number(id))
         .then((response) => {
-          //console.log("getHotel response:", response.data);
           setHotel(response.data);
         })
         .catch((err) => {
