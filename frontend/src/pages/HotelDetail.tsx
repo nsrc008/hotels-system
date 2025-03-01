@@ -82,6 +82,13 @@ const HotelDetail: React.FC = () => {
     navigate("/");
   };
 
+  const capitalizeName = (name: string) => {
+    return name
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
   if (!hotel)
     return (
       <div className="text-center p-6 text-gray-500 text-lg">Cargando...</div>
@@ -101,7 +108,7 @@ const HotelDetail: React.FC = () => {
               <FaHome className="text-2xl" />
             </button>
             <h1 className="text-3xl font-bold tracking-tight truncate">
-              {hotel.nombre}
+              {capitalizeName(hotel.nombre)}
             </h1>
           </div>
         </nav>
