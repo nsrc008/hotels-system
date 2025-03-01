@@ -1,54 +1,48 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+### README para el Frontend
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Frontend del Sistema de Gestión de Hoteles - README
 
-## Expanding the ESLint configuration
+Esta es la parte bonita de mi proyecto, hecha con React. Aquí puedes ver y manejar los hoteles desde una pantalla fácil de usar. Te explico cómo hacerlo funcionar en tu computadora o en la nube con Render, paso a pasito.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## ¿Qué hace el frontend?
+- Muestra una lista de hoteles y sus detalles.
+- Te deja agregar, editar y eliminar hoteles y tipos de habitaciones.
+- Habla con el backend para traer y guardar información.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Requisitos
+- **Git:** Para descargar el código.
+- **Node.js y npm:** Para construir la pantalla (descarga desde [nodejs.org](https://nodejs.org)).
+- **El backend funcionando:** Necesitas el backend listo (mira el README-backend.md).
+
+## Paso a paso para ejecutar localmente
+
+### 1. Entrar a la carpeta del frontend
+1. Abre la "Terminal" (en Windows busca "cmd", en Mac o Linux usa la terminal).
+2. Ve a la carpeta del frontend:
+```
+cd frontend
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+### 2. Instalar las dependencias
+3. Escribe esto para que npm traiga todo lo necesario:
 ```
+npm install
+```
+
+### 3. Configurar la conexión al backend
+4. Crea un archivo `.env.development`:
+- Abre Notepad y escribe:
+```
+VITE_API_URL=http://localhost:8000/api
+```
+- Guárdalo como `.env.development` en la carpeta `frontend/`.
+
+### 4. Iniciar el frontend
+5. Corre este comando:
+```
+npm run dev
+```
+- Verás algo como "Vite server running at http://localhost:5173". Abre esa dirección en tu navegador.
