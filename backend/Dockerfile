@@ -79,7 +79,7 @@ RUN echo "APP_NAME=Laravel" > .env && \
     php artisan key:generate
 
 # Exponer el puerto dinámico
-EXPOSE $PORT
+EXPOSE 80
 
 # Usar el script de entrada como comando por defecto
 CMD ["/entrypoint.sh"]
