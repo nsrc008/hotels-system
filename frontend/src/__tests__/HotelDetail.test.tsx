@@ -52,7 +52,7 @@ describe('HotelDetail', () => {
     await waitFor(() => {
       expect(api.getHotel).toHaveBeenCalledWith(1);
       expect(screen.getByText('Hotel A')).toBeInTheDocument();
-      expect(screen.getByText((content, element) => {
+      expect(screen.getByText((_, element) => {
         return element?.textContent === 'Dirección: Calle 1';
       })).toBeInTheDocument();
     }, { timeout: 2000 });
