@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getHotels, deleteHotel } from "../services/api";
+import { getHotels, deleteHotel } from "../services/api"; 
 import { Link } from "react-router-dom";
 import HotelForm from "./HotelForm";
 import Modal from "./Modal";
@@ -16,18 +16,19 @@ interface Hotel {
   numero_habitaciones: number;
 }
 
-// Componente que muestra la lista de hoteles y permite agregar o eliminar hoteles
+// Componente que muestra la lista de hoteles y permite agregar, editar o eliminar hoteles
 const HotelList: React.FC = () => {
-  const [hotels, setHotels] = useState<Hotel[]>([]); // Tipamos el estado como Hotel[]
-  const [showModal, setShowModal] = useState(false); // Controla la visibilidad del modal para agregar hotel
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+  const [showModal, setShowModal] = useState(false); // Modal para agregar hotel
+  const [editingHotel, setEditingHotel] = useState<Hotel | null>(null); // Estado para el hotel en edición
   const [showConfirm, setShowConfirm] = useState<number | null>(null); // ID del hotel a eliminar
 
-  // Carga la lista de hoteles al montar el componente o al cerrar el modal
+  // Carga la lista de hoteles al montar el componente o al cerrar modales
   useEffect(() => {
-    if (!showModal) {
+    if (!showModal && !editingHotel) {
       getHotels().then((response) => setHotels(response.data));
     }
-  }, [showModal]);
+  }, [showModal, editingHotel]);
 
   // Maneja la solicitud de eliminación de un hotel, mostrando una confirmación
   const handleDelete = (id: number) => {
@@ -48,9 +49,15 @@ const HotelList: React.FC = () => {
       });
   };
 
-  // Cierra el modal y recarga la lista de hoteles tras guardar
+  // Abre el modal para editar un hotel
+  const handleEdit = (hotel: Hotel) => {
+    setEditingHotel(hotel);
+  };
+
+  // Cierra el modal y recarga la lista tras guardar (agregar o editar)
   const handleFormSave = () => {
     setShowModal(false);
+    setEditingHotel(null);
     getHotels().then((response) => setHotels(response.data));
   };
 
@@ -93,6 +100,12 @@ const HotelList: React.FC = () => {
                 Ver detalles
               </Link>
               <button
+                onClick={() => handleEdit(hotel)}
+                className="p-2 text-blue-500 hover:text-blue-700"
+              >
+                Editar
+              </button>
+              <button
                 onClick={() => handleDelete(hotel.id)}
                 className="p-2 text-red-500 hover:text-red-700"
               >
@@ -106,6 +119,13 @@ const HotelList: React.FC = () => {
       {/* Modal para agregar un nuevo hotel */}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <HotelForm onSave={handleFormSave} />
+      </Modal>
+
+      {/* Modal para editar un hotel existente */}
+      <Modal isOpen={!!editingHotel} onClose={() => setEditingHotel(null)}>
+        {editingHotel && (
+          <HotelForm hotel={editingHotel} onSave={handleFormSave} />
+        )}
       </Modal>
 
       {/* Alerta de confirmación para eliminar un hotel */}
