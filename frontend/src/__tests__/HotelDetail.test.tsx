@@ -30,7 +30,7 @@ beforeAll(() => {
 
 describe('HotelDetail', () => {
   beforeEach(() => {
-    // No limpiar mocks aquí para preservar las llamadas
+    // No limpiar mocks aquí para preservar las configuraciones iniciales
   });
 
   afterEach(() => {
@@ -46,14 +46,23 @@ describe('HotelDetail', () => {
           </Routes>
         </MemoryRouter>
       );
-      await flushPromises();
     });
 
     await waitFor(() => {
       expect(api.getHotel).toHaveBeenCalledWith(1);
       expect(screen.getByText('Hotel A')).toBeInTheDocument();
-      expect(screen.getByText((_, element) => {
+      // Buscar texto dividido usando una función personalizada
+      expect(screen.getByText((content, element) => {
         return element?.textContent === 'Dirección: Calle 1';
+      })).toBeInTheDocument();
+      expect(screen.getByText((content, element) => {
+        return element?.textContent === 'Ciudad: Ciudad A';
+      })).toBeInTheDocument();
+      expect(screen.getByText((content, element) => {
+        return element?.textContent === 'NIT: 123';
+      })).toBeInTheDocument();
+      expect(screen.getByText((content, element) => {
+        return element?.textContent === 'Número de Habitaciones: 20';
       })).toBeInTheDocument();
     }, { timeout: 2000 });
   });
@@ -67,14 +76,13 @@ describe('HotelDetail', () => {
           </Routes>
         </MemoryRouter>
       );
-      await flushPromises();
     });
 
     await waitFor(() => {
-      expect(screen.getByRole('button', { name: /agregar tipo de habitación/i })).toBeInTheDocument();
+      expect(screen.getByTestId('add-room-type-button')).toBeInTheDocument();
     }, { timeout: 2000 });
 
-    fireEvent.click(screen.getByRole('button', { name: /agregar tipo de habitación/i }));
+    fireEvent.click(screen.getByTestId('add-room-type-button'));
     await waitFor(() => {
       expect(screen.getByRole('heading', { name: /agregar tipo de habitación/i })).toBeInTheDocument();
     }, { timeout: 2000 });
@@ -89,20 +97,18 @@ describe('HotelDetail', () => {
           </Routes>
         </MemoryRouter>
       );
-      await flushPromises();
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Eliminar')).toBeInTheDocument();
+      expect(screen.getByTestId('delete-room-1')).toBeInTheDocument();
     }, { timeout: 2000 });
 
     await act(async () => {
-      fireEvent.click(screen.getByText('Eliminar'));
+      fireEvent.click(screen.getByTestId('delete-room-1'));
       await waitFor(() => {
         expect(screen.getByText('Confirmar')).toBeInTheDocument();
       });
       fireEvent.click(screen.getByText('Confirmar'));
-      await flushPromises();
     });
 
     await waitFor(() => {
@@ -110,6 +116,3 @@ describe('HotelDetail', () => {
     }, { timeout: 2000 });
   });
 });
-
-// Función auxiliar para esperar promesas pendientes
-const flushPromises = () => new Promise((resolve) => setTimeout(resolve, 0));

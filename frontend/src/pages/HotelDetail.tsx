@@ -4,7 +4,7 @@ import { getHotel, deleteRoomType } from "../services/api";
 import RoomTypeForm from "../components/RoomTypeForm";
 import Modal from "../components/Modal";
 import Alert from "../components/Alert";
-import { FaHome, FaEdit, FaTrash } from "react-icons/fa"; // Añadimos íconos para Editar y Eliminar
+import { FaHome, FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 // Definimos las interfaces basadas en los datos usados
@@ -37,7 +37,7 @@ const HotelDetail: React.FC = () => {
     if (id) {
       getHotel(Number(id))
         .then((response) => {
-          console.log("getHotel response:", response.data);
+          //console.log("getHotel response:", response.data);
           setHotel(response.data);
         })
         .catch((err) => {
@@ -49,7 +49,7 @@ const HotelDetail: React.FC = () => {
   }, [id]);
 
   const handleDeleteRoomType = (roomId: number, e: React.MouseEvent) => {
-    e.stopPropagation(); // Evita que el clic en el botón interfiera con otras acciones
+    e.stopPropagation();
     setShowRoomConfirm(roomId);
   };
 
@@ -66,8 +66,7 @@ const HotelDetail: React.FC = () => {
       })
       .catch((err) => {
         toast.error(
-          err.response?.data?.message ||
-            "Error al eliminar el tipo de habitación"
+          err.response?.data?.message || "Error al eliminar el tipo de habitación"
         );
       });
   };
@@ -91,7 +90,6 @@ const HotelDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Header elegante */}
       <header className="bg-indigo-600 text-white p-6 shadow-lg fixed w-full top-0 z-10">
         <nav className="container mx-auto flex justify-between items-center">
           <div className="flex items-center space-x-4">
@@ -99,6 +97,7 @@ const HotelDetail: React.FC = () => {
               onClick={handleHome}
               className="text-white hover:text-indigo-200 transition-colors duration-200 focus:outline-none"
               title="Inicio"
+              data-testid="home-button"
             >
               <FaHome className="text-2xl" />
             </button>
@@ -109,9 +108,7 @@ const HotelDetail: React.FC = () => {
         </nav>
       </header>
 
-      {/* Contenido principal */}
       <main className="flex-grow container mx-auto py-8 px-4 sm:px-6 lg:px-8 mt-20">
-        {/* Card de detalles del hotel */}
         <div className="bg-white p-6 rounded-xl shadow-lg mb-8">
           <p className="text-lg text-gray-700 mb-2">
             <strong className="font-semibold text-gray-900">Dirección:</strong>{" "}
@@ -126,20 +123,18 @@ const HotelDetail: React.FC = () => {
             {hotel.nit}
           </p>
           <p className="text-lg text-gray-700 mb-4">
-            <strong className="font-semibold text-gray-900">
-              Número de Habitaciones:
-            </strong>{" "}
+            <strong className="font-semibold text-gray-900">Número de Habitaciones:</strong>{" "}
             {hotel.numero_habitaciones}
           </p>
           <button
             onClick={() => setShowAddModal(true)}
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+            data-testid="add-room-type-button"
           >
             + Agregar Tipo de Habitación
           </button>
         </div>
 
-        {/* Sección de tipos de habitación */}
         <div className="mb-6">
           <h2 className="text-2xl font-bold text-gray-800 tracking-tight">
             Tipos de Habitación
@@ -149,7 +144,7 @@ const HotelDetail: React.FC = () => {
           {hotel.tipos_habitacion.map((room) => (
             <div
               key={room.id}
-              className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer border border-gray-200 p-6 relative"
+              className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer border border-gray-200 p-6 relative"
             >
               <p className="text-gray-700 text-sm mb-1">
                 <strong className="font-semibold text-gray-900">Tipo:</strong>{" "}
@@ -169,12 +164,12 @@ const HotelDetail: React.FC = () => {
                 {room.cantidad}
               </p>
 
-              {/* Botones de acción como íconos a la derecha */}
               <div className="absolute top-4 right-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <button
                   onClick={() => setEditingRoom(room)}
                   className="text-blue-500 hover:text-blue-700 transition-colors duration-200"
                   title="Editar"
+                  data-testid={`edit-room-${room.id}`}
                 >
                   <FaEdit size={18} />
                 </button>
@@ -182,6 +177,7 @@ const HotelDetail: React.FC = () => {
                   onClick={(e) => handleDeleteRoomType(room.id, e)}
                   className="text-red-500 hover:text-red-700 transition-colors duration-200"
                   title="Eliminar"
+                  data-testid={`delete-room-${room.id}`}
                 >
                   <FaTrash size={18} />
                 </button>
@@ -190,12 +186,10 @@ const HotelDetail: React.FC = () => {
           ))}
         </div>
 
-        {/* Modal para agregar un nuevo tipo de habitación */}
         <Modal isOpen={showAddModal} onClose={() => setShowAddModal(false)}>
           <RoomTypeForm hotelId={Number(id)} onSave={handleSaveRoom} />
         </Modal>
 
-        {/* Modal para editar un tipo de habitación */}
         <Modal isOpen={!!editingRoom} onClose={() => setEditingRoom(null)}>
           {editingRoom && (
             <RoomTypeForm
@@ -206,7 +200,6 @@ const HotelDetail: React.FC = () => {
           )}
         </Modal>
 
-        {/* Alerta de confirmación para eliminar */}
         <Alert
           isOpen={showRoomConfirm !== null}
           onClose={() => setShowRoomConfirm(null)}

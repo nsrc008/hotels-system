@@ -7,7 +7,6 @@ import Alert from "./Alert";
 import { toast } from "react-toastify";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-// Definimos la interfaz Hotel basada en los datos usados
 interface Hotel {
   id: number;
   nombre: string;
@@ -17,7 +16,6 @@ interface Hotel {
   numero_habitaciones: number;
 }
 
-// Componente que muestra la lista de hoteles con mejoras visuales y funcionales
 const HotelList: React.FC = () => {
   const [hotels, setHotels] = useState<Hotel[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -67,32 +65,30 @@ const HotelList: React.FC = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Encabezado elegante */}
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-3xl font-bold text-gray-800 tracking-tight">
           Lista de Hoteles
         </h2>
         <button
           onClick={() => setShowModal(true)}
-          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+          data-testid="add-hotel-button"
         >
           + Agregar Hotel
         </button>
       </div>
 
-      {/* Grid de cards con animación */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {hotels.map((hotel) => (
           <div
             key={hotel.id}
             onClick={() => navigate(`/hoteles/${hotel.id}`)}
-            className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer border border-gray-200 p-6 relative"
+            className="group bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer border border-gray-200 p-6 relative"
+            data-testid={`hotel-card-${hotel.id}`}
           >
-            {/* Nombre del hotel */}
             <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors duration-300">
               {capitalizeName(hotel.nombre)}
             </h3>
-            {/* Detalles del hotel */}
             <p className="text-gray-600 text-sm mb-1">
               {hotel.direccion}, {hotel.ciudad}
             </p>
@@ -101,12 +97,12 @@ const HotelList: React.FC = () => {
               Habitaciones: {hotel.numero_habitaciones}
             </p>
 
-            {/* Botones de acción como íconos a la derecha */}
             <div className="absolute top-4 right-4 flex space-x-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <button
                 onClick={(e) => handleEdit(hotel, e)}
                 className="text-blue-500 hover:text-blue-700 transition-colors duration-200"
                 title="Editar"
+                data-testid={`edit-hotel-${hotel.id}`}
               >
                 <FaEdit size={18} />
               </button>
@@ -114,6 +110,7 @@ const HotelList: React.FC = () => {
                 onClick={(e) => handleDelete(hotel.id, e)}
                 className="text-red-500 hover:text-red-700 transition-colors duration-200"
                 title="Eliminar"
+                data-testid={`delete-hotel-${hotel.id}`}
               >
                 <FaTrash size={18} />
               </button>
@@ -122,17 +119,14 @@ const HotelList: React.FC = () => {
         ))}
       </div>
 
-      {/* Modal para agregar un nuevo hotel */}
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <HotelForm onSave={handleFormSave} />
       </Modal>
 
-      {/* Modal para editar un hotel existente */}
       <Modal isOpen={!!editingHotel} onClose={() => setEditingHotel(null)}>
         {editingHotel && <HotelForm hotel={editingHotel} onSave={handleFormSave} />}
       </Modal>
 
-      {/* Alerta de confirmación para eliminar */}
       <Alert
         isOpen={showConfirm !== null}
         onClose={() => setShowConfirm(null)}
