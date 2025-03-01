@@ -56,6 +56,10 @@ RUN php artisan vendor:publish --provider="Fruitcake\Cors\ServiceProvider"
 # Establecer permisos para Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Copiar el script SQL y cargarlo en PostgreSQL
+COPY database/hotel_db_schema.sql /tmp/hotel_db_schema.sql
+RUN PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USERNAME -d $DB_DATABASE -f /tmp/hotel_db_schema.sql
+
 # Asegurarse de que la base de datos tenga los permisos correctos
 RUN chmod -R 777 /var/www/html/database && \
     chown -R www-data:www-data /var/www/html/database
