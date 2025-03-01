@@ -47,11 +47,11 @@ COPY . .
 # Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Publicar la configuración de CORS
-RUN php artisan vendor:publish --provider="Fruitcake\Cors\ServiceProvider"
-
-# Instalar dependencias de Composer
+# Instalar dependencias de Composer primero
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+
+# Publicar la configuración de CORS después de instalar dependencias
+RUN php artisan vendor:publish --provider="Fruitcake\Cors\ServiceProvider"
 
 # Establecer permisos para Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
