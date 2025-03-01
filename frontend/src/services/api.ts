@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api", // URL de tu backend Laravel
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8000/api",
 });
 
 // Interfaz para un hotel
@@ -61,7 +61,11 @@ export const createRoomType = (hotelId: number, data: RoomTypeData) =>
   api.post<{ data: RoomType }>(`/hoteles/${hotelId}/habitaciones`, data);
 
 // Actualizar un tipo de habitación
-export const updateRoomType = (hotelId: number, id: number, data: RoomTypeData) =>
+export const updateRoomType = (
+  hotelId: number,
+  id: number,
+  data: RoomTypeData
+) =>
   api.put<{ data: RoomType }>(`/hoteles/${hotelId}/habitaciones/${id}`, data);
 
 // Eliminar un tipo de habitación
