@@ -22,13 +22,15 @@ Esta es la parte del "cerebro" de mi proyecto, hecha con Laravel. Aquí guardo l
 
 1. Abre la "Terminal" (en Windows busca "cmd", en Mac o Linux usa la terminal).
 2. Ve a la carpeta del backend:
+```
    cd backend
-
+```
 ### 2. Instalar las dependencias
 
 3. Escribe esto para que Composer traiga todo lo necesario:
+```
    composer install
-
+```
 ### 3. Configurar la base de datos
 
 4. **Instala PostgreSQL (si no usas Docker):**
@@ -39,34 +41,46 @@ Esta es la parte del "cerebro" de mi proyecto, hecha con Laravel. Aquí guardo l
 5. **Crea una base de datos:**
 
 -   Abre la terminal y escribe:
+  ```
     "C:\Program Files\PostgreSQL\15\bin\psql.exe" -U postgres
+  ```
 -   Usa tu contraseña (`mipassword123`), luego escribe:
+  ```
     CREATE DATABASE hotel_db;
     \q
+  ```
 
 6. **Configura el archivo `.env`:**
 
 -   Copia `.env.example` a `.env`:
+  ```
     copy .env.example .env
+  ```
 
 -   Abre `.env` con un editor (como Notepad) y cambia estas líneas:
+  ```
     DB_CONNECTION=pgsql
     DB_HOST=127.0.0.1
     DB_PORT=5432
     DB_DATABASE=hotel_db
     DB_USERNAME=postgres
     DB_PASSWORD=mipassword123
+  ```
 
 ### 4. Crear las tablas
 
 7. Corre este comando para hacer las tablas:
+   ```
    php artisan migrate
+   ```
 
 -   Si ves mensajes como "Migrated", ¡funcionó!
 
 ### 5. Iniciar el backend
 
 8. Inicia el servidor:
+   ```
    php artisan serve
+   ```
 
 -   Verás algo como "Server running on http://127.0.0.1:8000". Déjalo abierto.
