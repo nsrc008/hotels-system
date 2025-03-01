@@ -30,8 +30,10 @@ Necesitarás estas herramientas en tu computadora:
 
 1. Abre la "Terminal" (en Windows busca "cmd" o "PowerShell", en Mac o Linux usa la terminal).
 2. Escribe esto para descargar el proyecto:
+```
 git clone https://github.com/nsrc008/hotels-system.git
-3. Entra a la carpeta:
+```
+4. Entra a la carpeta:
 
 
 ### Paso 2: Preparar el backend
