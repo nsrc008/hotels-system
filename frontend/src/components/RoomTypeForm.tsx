@@ -30,15 +30,12 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({
   const [formData, setFormData] = useState<RoomTypeData>({
     tipo: (roomType?.tipo as "ESTANDAR" | "JUNIOR" | "SUITE") || "ESTANDAR",
     acomodacion:
-      (roomType?.acomodacion as
-        | "SENCILLA"
-        | "DOBLE"
-        | "TRIPLE"
-        | "CUADRUPLE") || "SENCILLA",
+      (roomType?.acomodacion as "SENCILLA" | "DOBLE" | "TRIPLE" | "CUADRUPLE") ||
+      "SENCILLA",
     cantidad: roomType?.cantidad || 0,
-  }); // Estado para los datos del formulario
+  });
 
-  // Opciones válidas de acomodación según el tipo de habitación (memoizado para evitar cambios)
+  // Opciones válidas de acomodación según el tipo de habitación (memoizado)
   const acomodacionesPorTipo = useMemo<{
     [key in "ESTANDAR" | "JUNIOR" | "SUITE"]: string[];
   }>(
@@ -102,68 +99,91 @@ const RoomTypeForm: React.FC<RoomTypeFormProps> = ({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="form-container mx-auto bg-white rounded-lg shadow-md"
-    >
-      <h3 className="text-xl font-semibold mb-4 text-gray-800">
-        {roomType ? "Editar" : "Agregar"} Tipo de Habitación
-      </h3>
-      <label className="block mb-2 font-medium text-gray-700">Tipo:</label>
-      <select
-        value={formData.tipo}
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            tipo: e.target.value as "ESTANDAR" | "JUNIOR" | "SUITE",
-          })
-        }
-        className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        <option value="ESTANDAR">Estándar</option>
-        <option value="JUNIOR">Junior</option>
-        <option value="SUITE">Suite</option>
-      </select>
-      <label className="block mb-2 font-medium text-gray-700">
-        Acomodación:
-      </label>
-      <select
-        value={formData.acomodacion}
-        onChange={(e) =>
-          setFormData({
-            ...formData,
-            acomodacion: e.target.value as
-              | "SENCILLA"
-              | "DOBLE"
-              | "TRIPLE"
-              | "CUADRUPLE",
-          })
-        }
-        className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        {acomodacionesPorTipo[formData.tipo].map((acomodacion) => (
-          <option key={acomodacion} value={acomodacion}>
-            {acomodacion.charAt(0) + acomodacion.slice(1).toLowerCase()}
-          </option>
-        ))}
-      </select>
-      <label className="block mb-2 font-medium text-gray-700">Cantidad:</label>
-      <input
-        type="number"
-        placeholder="Cantidad"
-        value={formData.cantidad}
-        onChange={(e) =>
-          setFormData({ ...formData, cantidad: Number(e.target.value) })
-        }
-        className="w-full p-2 mb-4 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button
-        type="submit"
-        className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded transition duration-200"
-      >
-        Guardar
-      </button>
-    </form>
+    <div className="max-w-md mx-auto p-6 bg-white rounded-xl shadow-lg">
+      <form onSubmit={handleSubmit}>
+        {/* Encabezado con título dinámico */}
+        <div className="mb-6">
+          <h3 className="text-2xl font-bold text-gray-800 tracking-tight">
+            {roomType ? "Editar" : "Agregar"} Tipo de Habitación
+          </h3>
+        </div>
+
+        {/* Campos del formulario */}
+        <div className="space-y-5">
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Tipo
+            </label>
+            <select
+              value={formData.tipo}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  tipo: e.target.value as "ESTANDAR" | "JUNIOR" | "SUITE",
+                })
+              }
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out"
+            >
+              <option value="ESTANDAR">Estándar</option>
+              <option value="JUNIOR">Junior</option>
+              <option value="SUITE">Suite</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Acomodación
+            </label>
+            <select
+              value={formData.acomodacion}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  acomodacion: e.target.value as
+                    | "SENCILLA"
+                    | "DOBLE"
+                    | "TRIPLE"
+                    | "CUADRUPLE",
+                })
+              }
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out"
+            >
+              {acomodacionesPorTipo[formData.tipo].map((acomodacion) => (
+                <option key={acomodacion} value={acomodacion}>
+                  {acomodacion.charAt(0) +
+                    acomodacion.slice(1).toLowerCase()}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block mb-1 text-sm font-medium text-gray-700">
+              Cantidad
+            </label>
+            <input
+              type="number"
+              placeholder="Ingrese la cantidad"
+              value={formData.cantidad}
+              onChange={(e) =>
+                setFormData({ ...formData, cantidad: Number(e.target.value) })
+              }
+              required
+              min="1"
+              className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out"
+            />
+          </div>
+              <br></br>
+          {/* Botón de guardar */}
+          <button
+            type="submit"
+            className="p-2 w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none"
+          >
+            Guardar
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 
