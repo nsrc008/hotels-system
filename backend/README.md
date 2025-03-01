@@ -1,6 +1,6 @@
 # Backend del Sistema de Gestión de Hoteles - README
 
-Esta es la parte del "cerebro" de mi proyecto, hecha con Laravel. Aquí guardo la información de los hoteles y controlo todo lo que pasa detrás de escena. Te explico cómo hacerlo funcionar en tu computadora o en la nube con Render, paso a pasito.
+Esta es la parte del "cerebro" del proyecto, hecha con Laravel. Aquí guardo la información de los hoteles y controlo todo lo que pasa detrás de escena. Te explico cómo hacerlo funcionar en tu computadora.
 
 ## ¿Qué hace el backend?
 
@@ -11,7 +11,7 @@ Esta es la parte del "cerebro" de mi proyecto, hecha con Laravel. Aquí guardo l
 ## Requisitos
 
 -   **Git:** Para descargar el código.
--   **Docker:** Para que todo sea fácil de correr.
+-   **Docker:** Para que todo sea fácil de correr (Opcional).
 -   **Composer:** Para instalar las herramientas de PHP.
 -   **PostgreSQL:** La base de datos (puedes instalarla o usar Docker).
 -   **PHP 8.2:** Necesario para Laravel 12.

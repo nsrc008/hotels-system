@@ -1,11 +1,6 @@
-
----
-
-### README para el Frontend
-
 # Frontend del Sistema de Gestión de Hoteles - README
 
-Esta es la parte bonita de mi proyecto, hecha con React. Aquí puedes ver y manejar los hoteles desde una pantalla fácil de usar. Te explico cómo hacerlo funcionar en tu computadora o en la nube con Render, paso a pasito.
+Esta es la parte bonita de mi proyecto, hecha con React. Aquí puedes ver y manejar los hoteles desde una pantalla fácil de usar. Te explico cómo hacerlo funcionar en tu computadora.
 
 ## ¿Qué hace el frontend?
 - Muestra una lista de hoteles y sus detalles.

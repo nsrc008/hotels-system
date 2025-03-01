@@ -1,6 +1,6 @@
 # Sistema de Gestión de Hoteles - README General
 
-Este es un proyecto que hice para ayudar a gestionar hoteles. Tiene dos partes: el "backend" (que guarda y organiza la información como una base de datos) y el "frontend" (la parte que ves en la pantalla, como listas y formularios). Usé Laravel para el backend y React para el frontend, y todo está guardado en la nube con Render. Aquí te explico cómo funciona y cómo hacerlo funcionar tú misma, paso a pasito.
+Este es un proyecto que hice para ayudar a gestionar hoteles. Tiene dos partes: el "backend" (que guarda y organiza la información como una base de datos) y el "frontend" (la parte que ves en la pantalla, como listas y formularios). Usé Laravel para el backend y React para el frontend, y todo está guardado en la nube con Render. Aquí te explico cómo funciona y cómo hacerlo funcionar tú misma.
 
 ## ¿Qué hace este proyecto?
 
@@ -12,7 +12,7 @@ Este es un proyecto que hice para ayudar a gestionar hoteles. Tiene dos partes: 
 
 - **backend/**: Aquí está el cerebro del proyecto, hecho con Laravel. Maneja la base de datos y responde a las peticiones del frontend.
 - **frontend/**: Aquí está la cara bonita, hecha con React. Muestra la información y te deja interactuar con ella.
-- Base de datos: Usamos PostgreSQL para guardar todo.
+- **Base de datos/**: Usamos PostgreSQL para guardar todo.
 
 ## Requisitos para ejecutarlo
 
@@ -22,9 +22,8 @@ Necesitarás estas herramientas en tu computadora:
 2. **Docker:** Para hacer que todo funcione como en una cajita mágica.
 3. **Composer:** Para el backend (es como un ayudante para instalar cosas en PHP).
 4. **Node.js y npm:** Para el frontend (como Lego para construir la pantalla).
-5. Cuenta en **Render** (render.com): ¡Es gratis para empezar!
 
-## Cómo ejecutarlo (Paso a paso para ti, abuelita)
+## Cómo ejecutarlo
 
 ### Paso 1: Descargar el proyecto
 
